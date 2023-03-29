@@ -81,6 +81,7 @@ import "C"
 import (
 	"crypto/rand"
 	"fmt"
+	"math"
 	"math/big"
 	"unsafe"
 )
@@ -169,9 +170,12 @@ func test04() {
         keyLen := len(publicKey)
 	fmt.Printf("0x长度是%v,值是%v\n",keyLen,str)
         res := C.rc4XorWithKeyOverride(C.CString(str), *(*C.uint)(unsafe.Pointer(&keyLen)))
-        //encryptstr := C.GoString((*C.char)(unsafe.Pointer(res)))	
-        encryptstr := (*[53]byte)(unsafe.Pointer(res)) //uint8_t*转byte[]
-	fmt.Printf("加密后key:%X\n",*encryptstr)
+        //encryptstr := C.GoString((*C.char)(unsafe.Pointer(res)))
+	var v = keyLen
+	var s []byte
+	const vmax =  math.MaxInt32 / unsafe.Sizeof(s[0])
+	encrypt := (*[vmax]byte)(unsafe.Pointer(res))[:v:v] //uint8_t*转byte[]
+	fmt.Printf("加密后key:%X\n",encrypt)
 
 }
 
