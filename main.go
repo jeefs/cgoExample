@@ -161,8 +161,10 @@ func test03() {
 
 }
 
+
 func test04() {
 	privateKey := genPrivateKey("U1", "TS")
+	//privateKey := "GKSHGDU0TYA456G4"
 	fmt.Printf("私钥%v\n",privateKey)
 	publicKey := genPublicKey(privateKey, "com.no.sisense.newcgmtool")
 	fmt.Printf("加密前key:%v\n", publicKey)
@@ -176,7 +178,6 @@ func test04() {
 	const vmax =  math.MaxInt32 / unsafe.Sizeof(s[0])
 	encrypt := (*[vmax]byte)(unsafe.Pointer(res))[:v:v] //uint8_t*转byte[]
 	fmt.Printf("加密后key:%X\n",encrypt)
-
 }
 
 // key生成
