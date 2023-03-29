@@ -170,7 +170,7 @@ func test04() {
 	fmt.Printf("0x长度是%v,值是%v\n",keyLen,str)
         res := C.rc4XorWithKeyOverride(C.CString(str), *(*C.uint)(unsafe.Pointer(&keyLen)))
         //encryptstr := C.GoString((*C.char)(unsafe.Pointer(res)))	
-        encryptstr := (*[53]byte)(unsafe.Pointer(res))
+        encryptstr := (*[53]byte)(unsafe.Pointer(res)) //uint8_t*转byte[]
 	fmt.Printf("加密后key:%X\n",*encryptstr)
 
 }
