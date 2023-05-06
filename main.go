@@ -142,8 +142,9 @@ func test01() {
 
 func test03() {
 	//加密
-	privateKey := genPrivateKey("U1", "TS")
-	publicKey := genPublicKey(privateKey, "com.sibionic.CGM")
+	//privateKey := genPrivateKey("U1", "TS")
+	privateKey := "GKSHGDU0TYA456G4"
+	publicKey := genPublicKey(privateKey, "com.sibionics.cgm.test")
 	fmt.Printf("加密前key:%v\n", publicKey)
 	str := fmt.Sprintf("%X\n", publicKey)
 	//keyLen := len(publicKey)
@@ -162,11 +163,12 @@ func test03() {
 }
 
 
+//正确的方式
 func test04() {
-	privateKey := genPrivateKey("U1", "TS")
-	//privateKey := "GKSHGDU0TYA456G4"
+	//privateKey := genPrivateKey("U1", "TS")
+	privateKey := "GKSHGDU0TYA456G4"
 	fmt.Printf("私钥%v\n",privateKey)
-	publicKey := genPublicKey(privateKey, "com.no.sisense.newcgmtool")
+	publicKey := genPublicKey(privateKey, "com.sibionics.cgm.test")
 	fmt.Printf("加密前key:%v\n", publicKey)
         str := fmt.Sprintf("%X", publicKey)
         keyLen := len(publicKey)
@@ -177,7 +179,16 @@ func test04() {
 	var s []byte
 	const vmax =  math.MaxInt32 / unsafe.Sizeof(s[0])
 	encrypt := (*[vmax]byte)(unsafe.Pointer(res))[:v:v] //uint8_t*转byte[]
-	fmt.Printf("加密后key:%X\n",encrypt)
+	encryptStr := fmt.Sprintf("%X",encrypt)
+	fmt.Printf("加密后key:%v",encryptStr)
+
+	//解密
+	 keyLen2 := len(encryptStr) / 2
+         res2 := C.rc4XorWithKeyOverride(C.CString(encryptStr), *(*C.uint)(unsafe.Pointer(&keyLen2)))
+         decryptstr := C.GoString((*C.char)(unsafe.Pointer(res2)))
+         //bytes := C.GoBytes(unsafe.Pointer(res2), *(*C.uint)(unsafe.Pointer(&keyLen2)))
+         fmt.Printf("解密后key:%v\n", decryptstr)
+
 }
 
 // key生成
